@@ -1,0 +1,43 @@
+/* Pliant font tokens — Geist
+ *
+ * NOT generated from variables.ts: the token source only names the family
+ * (`Geist, sans-serif`). The @font-face rules below are transcribed verbatim
+ * from the stylesheet the product actually loads —
+ * https://assets.getpliant.com/fonts/geist.css — with its relative `url()`s
+ * resolved to absolute so this file works standalone in a prototype.
+ *
+ * The product loads it via index.html:
+ *   <link href="%REACT_APP_ASSETS_URL%/fonts/geist.css" rel="stylesheet" />
+ * REACT_APP_ASSETS_URL is https://assets.getpliant.com in production.
+ *
+ * Geist ships as a VARIABLE font (100–900) plus an italic companion. Pliant's
+ * type tokens only ever ask for 400 and 500 — see tokens/typography.css and
+ * docs/01-foundations.md. The extra weights being available is not permission
+ * to use them.
+ */
+
+@font-face {
+  font-family: 'Geist';
+  src: url('https://assets.getpliant.com/fonts/Geist.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('https://assets.getpliant.com/fonts/Geist-Italic.woff2')
+    format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* The only family in the system. Every typography token resolves to it. */
+  --pliant-font-family: Geist, sans-serif;
+
+  /* The two weights the tokens use. */
+  --pliant-font-weight-regular: 400;
+  --pliant-font-weight-medium: 500;
+}
