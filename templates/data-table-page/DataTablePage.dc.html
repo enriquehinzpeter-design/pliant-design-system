@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Data table page" description="Pliant list page: search + Filter + result count + Download toolbar, hairline table with merchant/category cells, status-above-amount and card thumbnails, plus the 524px details drawer." -->
+<helmet><script src="./ds-base.js"></script><style>html,body{margin:0;height:100%}body{overflow:hidden}a{color:#111111}a:hover{color:#424242}</style></helmet>
+<div style="display:flex;height:100vh;overflow:hidden;background:#ffffff;font-family:Geist,sans-serif">
+<x-import component-from-global-scope="PliantDesignSystem_8f7377.Sidebar" mode="light" collapsible="{{ true }}" org-name="Aetna" active-item="all-transactions" items="{{ navItems }}" logo="{{ logo }}" hint-size="232px,100%"></x-import>
+<main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;position:relative">
+<div style="display:flex;justify-content:flex-end;align-items:center;gap:22px;padding:20px 36px 0;flex-shrink:0;color:rgba(0,0,0,0.54)">
+<span style="display:inline-flex;color:#a4b53b">{{ iconSparkle }}</span>
+<span style="display:inline-flex">{{ iconTray }}</span>
+<span style="display:inline-flex">{{ iconInfo }}</span>
+<span style="display:inline-flex">{{ iconBell }}</span>
+<span style="display:inline-flex">{{ iconUser }}</span>
+</div>
+<header style="padding:18px 36px 0;flex-shrink:0">
+<div style="font-size:13px;letter-spacing:0.17px;color:rgba(0,0,0,0.87);margin-bottom:2px">Transactions</div>
+<h1 style="margin:0;min-height:44px;font-weight:500;font-size:32px;line-height:44px;letter-spacing:-0.2px;color:rgba(0,0,0,0.87);white-space:nowrap">All transactions</h1>
+</header>
+<div style="flex:1;overflow-y:auto;padding:0 36px 36px">
+<div style="display:flex;align-items:center;gap:16px;margin:22px 0 14px">
+<x-import component-from-global-scope="PliantDesignSystem_8f7377.TextField" placeholder="Search" full-width="{{ false }}" start-adornment="{{ iconSearch }}" style="width:192px" hint-size="192px,40px"></x-import>
+<span style="display:inline-flex;align-items:center;gap:8px;font-size:14px;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">{{ iconFilter }}Filter</span>
+<span style="font-size:13px;letter-spacing:0.17px;color:rgba(0,0,0,0.6)">{{ resultCount }}</span>
+<span style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;font-size:14px;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">{{ iconDownload }}Download</span>
+</div>
+<div style="border-top:1px solid rgba(0,0,0,0.12)">
+<x-import component-from-global-scope="PliantDesignSystem_8f7377.Table" columns="{{ columns }}" rows="{{ rows }}" on-row-click="{{ openRow }}" hint-size="100%,420px"></x-import>
+</div>
+</div>
+{{ drawer }}
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1512,&quot;height&quot;:900},&quot;orgScheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;visa&quot;,&quot;mastercard&quot;,&quot;mastercard-commercial&quot;,&quot;none&quot;],&quot;default&quot;:&quot;visa&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Organisation&quot;}}">
+const ROWS = [
+  { id: 1, merchant: 'MOCO', category: 'Travel & Accommodation', date: '17 Jun 2026', time: '10:43', card: 'Virtual', last4: '7558', colourway: 'lime', member: 'Barnabas Bartha', account: 'Main account (GBP)', amount: '-2.00 GBP', status: 'PENDING', receiptOverdue: true },
+  { id: 2, merchant: 'Google Digital Garage', category: 'Computing & Software', date: '14 May 2026', time: '09:12', card: 'asdf', last4: '7881', colourway: 'gray', member: 'Gabriel Hora', account: 'Main account (GBP)', amount: '-1.00 GBP', status: 'PENDING', review: 'thumb' },
+  { id: 3, merchant: 'FAANG GmbH', category: 'Advertising & Marketing', date: '11 May 2026', time: '16:05', card: 'Virtual', last4: '8299', colourway: 'gray', member: 'Barnabas Bartha', account: 'Main account (GBP)', amount: '-2.00 GBP', status: 'DECLINED' },
+  { id: 4, merchant: 'IONOS', category: 'Computing & Software', date: '26 Jan 2026', time: '11:30', card: 'asdf', last4: '7881', colourway: 'gray', member: 'Gabriel Hora', account: 'Main account (GBP)', amount: '-1.00 GBP', status: 'PENDING' },
+  { id: 5, merchant: 'YBS MEDICAL', category: 'Travel & Accommodation', date: '25 Jun 2025', time: '14:20', card: 'Mis123', last4: '1379', colourway: 'sage', member: 'Hemal Desai', account: 'Main account (GBP)', amount: '-254.94 GBP', status: 'PENDING', review: 'flag', flagged: true },
+  { id: 6, merchant: 'BKG*Hotel at Booking.c', category: 'Travel & Accommodation', date: '25 Jun 2025', time: '10:15', card: 'Mis123', last4: '1379', colourway: 'sage', member: 'Hemal Desai', account: 'Main account (GBP)', amount: '-3,696.43 GBP', status: 'PENDING' },
+];
+
+const CATEGORY_ICON = {
+  'Travel & Accommodation': ['Travel', true],
+  'Computing & Software': ['Computing', true],
+  'Advertising & Marketing': ['PaperPlaneTilt', false],
+  'Services': ['FirstAid', false],
+  'Office Supplies & Equipment': ['Paperclip', false],
+};
+const A = '../../assets';
+
+class Component extends DCLogic {
+  state = { sel: null };
+  renderVals() {
+    const NS = window.PliantDesignSystem_8f7377 || {};
+    const { Icon, IconButton, Alert, Switch, Typography } = NS;
+    const el = React.createElement;
+    const ic = (n, size, weight) => (Icon ? el(Icon, { name: n, size: size || 20, weight, assetBase: A }) : null);
+    const cat = (c, size) => {
+      const m = CATEGORY_ICON[c] || ['Storefront', false];
+      return Icon ? el(Icon, { name: m[0], size: size || 22, assetBase: m[1] ? A : undefined }) : null;
+    };
+    // Parametric vector cards at the "icon" size class — never a scaled render.
+    // colourway and scheme are always explicit; scheme is per-organization.
+    const { CardIcon } = NS;
+    const thumb = (colourway, scale) => (CardIcon
+      ? el(CardIcon, { colourway: colourway, scheme: this.props.orgScheme ?? 'visa', size: 'icon', height: Math.round(30 * (scale || 1)), assetBase: A })
+      : null);
+    const statusAmount = (r) => {
+      const declined = r.status === 'DECLINED';
+      return el('span', { style: { display: 'block', textAlign: 'right' } }, [
+        el('span', { key: 1, style: { display: 'block', fontSize: 10, fontWeight: 500, letterSpacing: '0.15px', lineHeight: '160%', textTransform: 'uppercase', color: declined ? '#e53948' : '#3073e8' } }, r.status),
+        el('span', { key: 2, style: { display: 'block', fontSize: 14, fontWeight: 500, letterSpacing: '0.17px', fontVariantNumeric: 'tabular-nums', color: declined ? '#e53948' : 'rgba(0,0,0,0.87)', textDecoration: declined ? 'line-through' : 'none' } }, r.amount),
+      ]);
+    };
+    const sel = this.state.sel;
+    const detailRow = (label, value, action, tall) => el('div', {
+      style: { display: 'flex', alignItems: tall ? 'flex-start' : 'center', justifyContent: 'space-between', gap: 16, padding: tall ? '14px 16px' : '0 16px', minHeight: tall ? 70 : 56, border: '1px solid rgba(0,0,0,0.12)', borderRadius: 8 },
+    }, [
+      el('span', { key: 1, style: { fontSize: 14, letterSpacing: '0.17px', color: 'rgba(0,0,0,0.87)' } }, label),
+      el('span', { key: 2, style: { display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, letterSpacing: '0.17px', textAlign: 'right', color: 'rgba(0,0,0,0.87)' } }, [value, action]),
+    ]);
+    const sectionLabel = (text, action) => el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, margin: '26px 0 10px' } }, [
+      el('span', { key: 1, style: { fontSize: 10, fontWeight: 500, letterSpacing: '0.15px', lineHeight: '160%', textTransform: 'uppercase', color: 'rgba(0,0,0,0.6)' } }, text),
+      action,
+    ]);
+
+    return {
+      resultCount: ROWS.length + ' results',
+      iconSparkle: ic('Copilot', 20), iconTray: ic('Tray'), iconInfo: ic('Info'), iconBell: ic('Bell'), iconUser: ic('UserCircle'),
+      iconSearch: ic('MagnifyingGlass', 18), iconFilter: ic('FadersHorizontal', 18), iconDownload: ic('DownloadSimple', 18),
+      logo: el('img', { src: A + '/logo-icon.svg', alt: 'Pliant', style: { height: 20 } }),
+      openRow: (r) => this.setState({ sel: r }),
+      rows: ROWS,
+      columns: [
+        { field: 'merchant', headerName: 'Merchant / Category', renderCell: (r) => el('div', { style: { display: 'flex', alignItems: 'center', gap: 14 } }, [
+          el('span', { key: 1, style: { position: 'relative', display: 'inline-flex', flexShrink: 0 } }, [
+            cat(r.category),
+            r.flagged ? el('span', { key: 'f', style: { position: 'absolute', right: -2, bottom: -2, width: 8, height: 8, borderRadius: '50%', background: '#e53948' } }) : null,
+          ]),
+          el('span', { key: 2, style: { minWidth: 0 } }, [
+            el('span', { key: 'a', style: { display: 'block', fontSize: 14, letterSpacing: '0.17px', color: 'rgba(0,0,0,0.87)' } }, r.merchant),
+            el('span', { key: 'b', style: { display: 'block', fontSize: 12, letterSpacing: '0.4px', color: 'rgba(0,0,0,0.6)' } }, r.category),
+          ]),
+        ]) },
+        { field: 'date', headerName: 'Date', width: 130 },
+        ...(sel ? [] : [
+          { field: 'card', headerName: 'Card', width: 170, renderCell: (r) => el('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 12 } }, [
+            thumb(r.colourway),
+            el('span', { key: 2 }, [
+              el('span', { key: 'a', style: { display: 'block', fontSize: 14 } }, r.card),
+              el('span', { key: 'b', style: { display: 'block', fontSize: 12, color: 'rgba(0,0,0,0.6)' } }, r.last4),
+            ]),
+          ]) },
+          { field: 'member', headerName: 'Member', width: 160 },
+          { field: 'account', headerName: 'Account', width: 200 },
+        ]),
+        { field: 'amount', headerName: 'Amount', width: 130, align: 'right', renderCell: statusAmount },
+        ...(sel ? [] : [
+          { field: 'review', headerName: 'Review', width: 90, renderCell: (r) => r.review === 'thumb' ? ic('ThumbsUp') : r.review === 'flag' ? el(Icon, { name: 'FlagPennant', size: 20, weight: 'fill', color: '#ff4d5c' }) : null },
+        ]),
+        { field: 'export', headerName: 'Export', width: 80 },
+      ],
+      drawer: !sel ? null : el('div', {
+        style: { position: 'absolute', top: 0, right: 0, bottom: 0, width: 524, background: '#fff', boxShadow: '0 16px 16px -1200px rgba(16,24,40,0.24),0 24px 48px 0 rgba(16,24,40,0.16)', display: 'flex', flexDirection: 'column', overflowY: 'auto', zIndex: 20 },
+      }, [
+        el('div', { key: 'x', style: { display: 'flex', justifyContent: 'flex-end', padding: '20px 22px 0' } },
+          IconButton ? el(IconButton, { size: 'small', onClick: () => this.setState({ sel: null }) }, ic('X')) : null),
+        el('div', { key: 'h', style: { padding: '4px 22px 0' } }, [
+          el('div', { key: 1, style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20 } }, [
+            el('span', { key: 'a', style: { width: 68, height: 68, borderRadius: 12, background: '#f5f5f0', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 } }, cat(sel.category, 30)),
+            el('span', { key: 'b', style: { textAlign: 'right' } }, [
+              el('span', { key: 1, style: { display: 'block', fontSize: 10, fontWeight: 500, letterSpacing: '0.15px', textTransform: 'uppercase', color: sel.status === 'DECLINED' ? '#e53948' : '#3073e8' } }, sel.status),
+              el('span', { key: 2, style: { display: 'block', fontSize: 30, fontWeight: 500, lineHeight: '40px', letterSpacing: '-0.2px', color: 'rgba(0,0,0,0.87)' } }, sel.amount),
+            ]),
+          ]),
+          el('div', { key: 2, style: { marginTop: 12, fontSize: 15, letterSpacing: '0.15px', color: 'rgba(0,0,0,0.87)' } }, sel.merchant),
+          el('div', { key: 3, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginTop: 16, paddingBottom: 16, borderBottom: '1px solid rgba(0,0,0,0.12)' } }, [
+            el('span', { key: 'a', style: { display: 'inline-flex', alignItems: 'center', gap: 10, fontSize: 14, letterSpacing: '0.17px', color: 'rgba(0,0,0,0.87)' } }, [ic('CalendarCheck', 18), sel.date + ', ' + sel.time]),
+            el('span', { key: 'b', style: { display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, background: '#f3f4f6', fontSize: 13, fontWeight: 500, letterSpacing: '0.16px', color: 'rgba(0,0,0,0.87)' } }, ['Flag transaction', ic('FlagPennant', 16)]),
+          ]),
+        ]),
+        el('div', { key: 'b', style: { padding: '20px 22px 32px' } }, [
+          sel.receiptOverdue && Alert ? el(Alert, { key: 'al', severity: 'error', title: 'Overdue Receipt' }, 'This receipt has been overdue for 2 days. Please upload it as soon as possible.') : null,
+          sectionLabel('Transaction details'),
+          el('div', { key: 'rows', style: { display: 'grid', gap: 8 } }, [
+            detailRow('Merchant', sel.merchant),
+            detailRow('Cardholder', sel.member),
+            detailRow('Card', el('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 10 } }, [
+              el('span', { key: 1, style: { textAlign: 'right' } }, [
+                el('span', { key: 'a', style: { display: 'block' } }, sel.card),
+                el('span', { key: 'b', style: { display: 'block', fontSize: 12, color: 'rgba(0,0,0,0.6)' } }, sel.last4),
+              ]),
+              thumb(sel.colourway),
+            ])),
+            detailRow('Account', sel.account),
+            detailRow(el('span', null, [
+              el('span', { key: 1, style: { display: 'block' } }, 'Comment'),
+              el('span', { key: 2, style: { display: 'block', marginTop: 4, fontSize: 13, color: 'rgba(0,0,0,0.6)' } }, 'Add comment'),
+            ]), null, IconButton ? el(IconButton, { size: 'small' }, ic('PencilSimple', 18)) : null, true),
+          ]),
+          sectionLabel('Receipt', el('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 10 } }, [
+            Switch ? el(Switch, { key: 1, size: 'small' }) : null,
+            el('span', { key: 2, style: { fontSize: 14, color: 'rgba(0,0,0,0.87)' } }, 'Not needed'),
+          ])),
+          el('div', { key: 'dz', style: { border: '1px dashed rgba(0,0,0,0.16)', borderRadius: 8, padding: '32px 24px', textAlign: 'center' } }, [
+            Icon ? el(Icon, { key: 1, name: 'ReceiptAdd', assetBase: A, size: 26 }) : null,
+            el('div', { key: 2, style: { marginTop: 10, fontSize: 14, letterSpacing: '0.17px', color: 'rgba(0,0,0,0.6)' } }, 'Drop a receipt here or browse files'),
+          ]),
+        ]),
+      ]),
+      navItems: [
+        { label: 'Dashboard', value: 'dashboard', icon: ic('SquaresFour') },
+        { label: 'Wallet', value: 'wallet', icon: ic('Wallet') },
+        { label: 'Members & Teams', value: 'members-group', icon: ic('Users'), children: [{ label: 'Members', value: 'members' }, { label: 'Teams', value: 'teams' }] },
+        { label: 'Accounts', value: 'accounts', icon: ic('Bank') },
+        { label: 'Cards', value: 'cards-group', icon: ic('VerticalCards'), children: [{ label: 'Cards', value: 'cards' }, { label: 'Card Requests', value: 'card-requests', badge: 25 }] },
+        { label: 'Transactions', value: 'tx-group', icon: ic('ListBullets'), children: [
+          { label: 'My Transactions', value: 'my-transactions' }, { label: 'All Transactions', value: 'all-transactions' },
+          { label: 'Needs Review', value: 'needs-review' }, { label: 'Flagged Transactions', value: 'flagged', badge: 1 },
+        ] },
+        { label: 'Accounting Export', value: 'export-group', icon: ic('BookOpen'), children: [{ label: 'Export', value: 'export' }, { label: 'Export History', value: 'export-history' }] },
+        { label: 'Billing', value: 'billing-group', icon: ic('Files'), children: [{ label: 'Statements', value: 'statements' }, { label: 'Payments', value: 'payments' }] },
+        { label: 'Rewards', value: 'rewards', icon: ic('Star') },
+        { label: 'Merchants', value: 'merchants', icon: ic('Storefront') },
+        { label: 'Settings', value: 'settings-group', icon: ic('Gear'), children: [
+          { label: 'Organization', value: 'settings-organization' }, { label: 'Accounting', value: 'settings-accounting' },
+          { label: 'Policies', value: 'settings-policies' }, { label: 'Modules', value: 'settings-modules' },
+        ] },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>
