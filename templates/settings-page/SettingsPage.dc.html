@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Settings / form page" description="Pliant settings page: light nav rail, breadcrumb + large title, underline tab row, section heading and label-above-value fields with hairline underlines and pencil edit icons." -->
+<helmet><script src="./ds-base.js"></script><style>html,body{margin:0;height:100%}body{overflow:hidden}a{color:#111111}a:hover{color:#424242}</style></helmet>
+<div style="display:flex;height:100vh;overflow:hidden;background:#ffffff;font-family:Geist,sans-serif">
+<x-import component-from-global-scope="PliantDesignSystem_8f7377.Sidebar" mode="light" collapsible="{{ true }}" org-name="Aetna" active-item="settings-organization" items="{{ navItems }}" logo="{{ logo }}" hint-size="232px,100%"></x-import>
+<main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+<div style="display:flex;justify-content:flex-end;align-items:center;gap:22px;padding:20px 36px 0;flex-shrink:0;color:rgba(0,0,0,0.54)">
+<span style="display:inline-flex;color:#a4b53b">{{ iconSparkle }}</span>
+<span style="display:inline-flex">{{ iconTray }}</span>
+<span style="display:inline-flex">{{ iconInfo }}</span>
+<span style="display:inline-flex">{{ iconBell }}</span>
+<span style="display:inline-flex">{{ iconUser }}</span>
+</div>
+<header style="padding:18px 36px 0;flex-shrink:0">
+<div style="font-size:13px;letter-spacing:0.17px;color:rgba(0,0,0,0.87);margin-bottom:2px">Settings</div>
+<h1 style="margin:0;min-height:44px;font-weight:500;font-size:32px;line-height:44px;letter-spacing:-0.2px;color:rgba(0,0,0,0.87);white-space:nowrap">Organization</h1>
+<div style="border-bottom:1px solid rgba(0,0,0,0.12);margin-top:22px">
+<div style="display:flex;gap:24px">{{ tabRow }}</div>
+</div>
+</header>
+<div style="flex:1;overflow-y:auto;padding:0 36px 36px">
+<div style="max-width:var(--content-max-width,840px);padding-top:28px">
+<h2 style="margin:0 0 26px;font-weight:500;font-size:20px;line-height:160%;letter-spacing:0.15px;color:rgba(0,0,0,0.87)">Organization details</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;column-gap:60px;row-gap:32px">
+<div style="display:flex;align-items:flex-end;gap:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.12)">
+<span style="flex:1;min-width:0"><span style="display:block;font-size:12px;letter-spacing:0.15px;color:rgba(0,0,0,0.6)">Legal name</span><span style="display:block;margin-top:6px;font-size:14px;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">Aetna</span></span>
+</div>
+<div style="display:flex;align-items:flex-end;gap:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.12)">
+<span style="flex:1;min-width:0"><span style="display:flex;align-items:center;gap:6px;font-size:12px;letter-spacing:0.15px;color:rgba(0,0,0,0.6)">Trade name{{ iconHint }}</span><span style="display:block;margin-top:6px;font-size:14px;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">Aetna International</span></span>
+{{ pencil }}
+</div>
+<div style="grid-column:span 2;display:flex;align-items:flex-end;gap:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.12)">
+<span style="flex:1;min-width:0"><span style="display:block;font-size:12px;letter-spacing:0.15px;color:rgba(0,0,0,0.6)">Billing address</span><span style="display:block;margin-top:6px;font-size:14px;line-height:143%;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">Street -<br>SW1A1AA Test City<br>United Kingdom</span></span>
+</div>
+<div style="grid-column:span 2;display:flex;align-items:flex-end;gap:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.12)">
+<span style="flex:1;min-width:0"><span style="display:flex;align-items:center;gap:6px;font-size:12px;letter-spacing:0.15px;color:rgba(0,0,0,0.6)">Billing email address{{ iconHint }}</span><span style="display:block;margin-top:6px;font-size:14px;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">may.formosa+aetna_dev@getpliant.com</span></span>
+{{ pencil }}
+</div>
+<div style="grid-column:span 2;display:flex;align-items:flex-end;gap:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.12)">
+<span style="flex:1;min-width:0"><span style="display:block;font-size:12px;letter-spacing:0.15px;color:rgba(0,0,0,0.6)">Registration</span><span style="display:block;margin-top:6px;font-size:14px;line-height:143%;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">-<br>UK123445</span></span>
+</div>
+<div style="grid-column:span 2;display:flex;align-items:flex-end;gap:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.12)">
+<span style="flex:1;min-width:0"><span style="display:block;font-size:12px;letter-spacing:0.15px;color:rgba(0,0,0,0.6)">VAT-ID</span><span style="display:block;margin-top:6px;font-size:14px;letter-spacing:0.17px;color:rgba(0,0,0,0.87)">GB123456789</span></span>
+{{ pencil }}
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1512,&quot;height&quot;:900}}">
+const TABS = [
+  { value: 'general', label: 'General' },
+  { value: 'information', label: 'Information Update' },
+  { value: 'bank', label: 'Bank Accounts' },
+  { value: 'receipts', label: 'Receipts' },
+  { value: 'plan', label: 'Plan (Standard)' },
+];
+const A = '../../assets';
+
+class Component extends DCLogic {
+  state = { tab: 'general' };
+  renderVals() {
+    const { Icon, IconButton } = window.PliantDesignSystem_8f7377 || {};
+    const el = React.createElement;
+    const ic = (n, size, weight) => (Icon ? el(Icon, { name: n, size: size || 20, weight, assetBase: A }) : null);
+    return {
+      iconSparkle: ic('Copilot', 20), iconTray: ic('Tray'), iconInfo: ic('Info'), iconBell: ic('Bell'), iconUser: ic('UserCircle'),
+      iconHint: Icon ? el(Icon, { name: 'Info', size: 13, color: 'rgba(0,0,0,0.54)' }) : null,
+      pencil: IconButton ? el(IconButton, { size: 'small', style: { marginBottom: -6 } }, ic('PencilSimple', 18)) : null,
+      logo: el('img', { src: A + '/logo-icon.svg', alt: 'Pliant', style: { height: 20 } }),
+      tabRow: TABS.map((t) => {
+        const active = t.value === this.state.tab;
+        return el('button', {
+          key: t.value, onClick: () => this.setState({ tab: t.value }),
+          style: { position: 'relative', border: 0, background: 'none', cursor: 'pointer', padding: '0 0 10px', fontFamily: 'Geist,sans-serif', fontWeight: active ? 500 : 400, fontSize: 15, letterSpacing: '0.15px', color: active ? 'rgba(0,0,0,0.87)' : 'rgba(0,0,0,0.72)' },
+        }, [t.label, active ? el('span', { key: 'u', style: { position: 'absolute', left: 0, right: 0, bottom: -1, height: 2, background: '#111111' } }) : null]);
+      }),
+      navItems: [
+        { label: 'Dashboard', value: 'dashboard', icon: ic('SquaresFour') },
+        { label: 'Wallet', value: 'wallet', icon: ic('Wallet') },
+        { label: 'Members & Teams', value: 'members-group', icon: ic('Users'), children: [{ label: 'Members', value: 'members' }, { label: 'Teams', value: 'teams' }] },
+        { label: 'Accounts', value: 'accounts', icon: ic('Bank') },
+        { label: 'Cards', value: 'cards-group', icon: ic('VerticalCards'), children: [{ label: 'Cards', value: 'cards' }, { label: 'Card Requests', value: 'card-requests', badge: 25 }] },
+        { label: 'Transactions', value: 'tx-group', icon: ic('ListBullets'), children: [
+          { label: 'My Transactions', value: 'my-transactions' }, { label: 'All Transactions', value: 'all-transactions' },
+          { label: 'Needs Review', value: 'needs-review' }, { label: 'Flagged Transactions', value: 'flagged', badge: 1 },
+        ] },
+        { label: 'Accounting Export', value: 'export-group', icon: ic('BookOpen'), children: [{ label: 'Export', value: 'export' }, { label: 'Export History', value: 'export-history' }] },
+        { label: 'Billing', value: 'billing-group', icon: ic('Files'), children: [{ label: 'Statements', value: 'statements' }, { label: 'Payments', value: 'payments' }] },
+        { label: 'Rewards', value: 'rewards', icon: ic('Star') },
+        { label: 'Merchants', value: 'merchants', icon: ic('Storefront') },
+        { label: 'Settings', value: 'settings-group', icon: ic('Gear'), children: [
+          { label: 'Organization', value: 'settings-organization' }, { label: 'Accounting', value: 'settings-accounting' },
+          { label: 'Policies', value: 'settings-policies' }, { label: 'Modules', value: 'settings-modules' },
+        ] },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

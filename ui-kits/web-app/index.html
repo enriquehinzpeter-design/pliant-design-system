@@ -1,0 +1,63 @@
+<!-- @dsCard group="Web app" viewport="1512x900" name="Pliant admin app" subtitle="Click-through recreation of every External-app nav destination" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pliant — admin app</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>html,body{margin:0;height:100%}body{font-family:var(--font-sans);overflow:hidden}#root{height:100vh}a{color:var(--primary-main)}a:hover{color:var(--primary-light)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" src="Bits.jsx"></script>
+<script type="text/babel" src="Patterns.jsx"></script>
+<script type="text/babel" src="Overlays.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="AppShell.jsx"></script>
+<script type="text/babel" src="DashboardScreen.jsx"></script>
+<script type="text/babel" src="WalletScreen.jsx"></script>
+<script type="text/babel" src="AccountsScreen.jsx"></script>
+<script type="text/babel" src="TransactionsScreen.jsx"></script>
+<script type="text/babel" src="CardsScreen.jsx"></script>
+<script type="text/babel" src="CardRequestsScreen.jsx"></script>
+<script type="text/babel" src="MembersScreen.jsx"></script>
+<script type="text/babel" src="TeamsScreen.jsx"></script>
+<script type="text/babel" src="AccountingExportScreen.jsx"></script>
+<script type="text/babel" src="PaymentsScreen.jsx"></script>
+<script type="text/babel" src="RewardsScreen.jsx"></script>
+<script type="text/babel" src="MerchantsScreen.jsx"></script>
+<script type="text/babel" src="SettingsScreen.jsx"></script>
+<script type="text/babel" src="StatementsScreen.jsx"></script>
+<script type="text/babel" src="ErrorScreen.jsx"></script>
+<script type="text/babel" src="PoliciesScreen.jsx"></script>
+<script type="text/babel" src="ModulesScreen.jsx"></script>
+<script type="text/babel" src="IntegrationsScreen.jsx"></script>
+<script type="text/babel" src="PlaceholderScreen.jsx"></script>
+<script type="text/babel">
+const TX_SCREENS = ['my-transactions', 'all-transactions', 'needs-review', 'flagged'];
+// Destinations with no reference screenshot yet — rendered as an honest empty state.
+const NOT_CAPTURED = {
+  'export-queue': ['Export queue', 'Accounting Export'],
+  exported: ['Exported', 'Accounting Export'],
+};
+const SCREENS = {
+  dashboard: 'DashboardScreen', wallet: 'WalletScreen', accounts: 'AccountsScreen',
+  cards: 'CardsScreen', 'card-requests': 'CardRequestsScreen',
+  members: 'MembersScreen', teams: 'TeamsScreen',
+  'not-exported': 'AccountingExportScreen', payments: 'PaymentsScreen',
+  statements: 'StatementsScreen', 'error-404': 'ErrorScreen',
+  rewards: 'RewardsScreen', merchants: 'MerchantsScreen',
+  'settings-organization': 'SettingsScreen', 'settings-accounting': 'SettingsScreen',
+  'settings-card-templates': 'SettingsScreen',
+  'settings-policies': 'PoliciesScreen', 'settings-modules': 'ModulesScreen',
+  'settings-integrations': 'IntegrationsScreen',
+};
+function App() {
+  const [screen, setScreen] = React.useState('dashboard');
+  const nav = (s) => setScreen(s);
+  if (TX_SCREENS.indexOf(screen) !== -1) return <TransactionsScreen screen={screen} onNavigate={nav} />;
+  const name = SCREENS[screen];
+  if (name) { const S = window[name]; return <S screen={screen} onNavigate={nav} />; }
+  const [title, bc] = NOT_CAPTURED[screen] || [screen, null];
+  return <PlaceholderScreen screen={screen} title={title} breadcrumb={bc} onNavigate={nav} />;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

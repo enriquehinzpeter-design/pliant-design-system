@@ -1,0 +1,27 @@
+<!-- @dsCard group="Brand" viewport="700x330" name="Card artwork — in-app" subtitle="Six colourways; standard, 1× single-use and label templates" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>body{margin:0;padding:20px;font-family:var(--font-sans);background:var(--surface-page)}.row{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}.cap{margin:7px 0 0;font-size:10px;letter-spacing:.4px;color:var(--text-secondary)}.note{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--divider);font-size:12px;line-height:166%;letter-spacing:.4px;color:var(--text-secondary)}</style></head>
+<body><div id="root"></div>
+<script type="text/babel">
+const NS = window.PliantDesignSystem_8f7377 || {};
+const { CardIcon, CardRender } = NS;
+
+function Demo() {
+  if (!CardRender) return <p className="note">Bundle not compiled yet.</p>;
+  const common = { height: 170, cardholder: 'Ada Lovelace', maskedNumber: '**** **** **** 9508', expiry: '09/28', cvv: '***' };
+  return <div>
+    <div className="row">
+      <figure style={{ margin: 0 }}><CardRender colourway="lime" scheme="visa" {...common} /><figcaption className="cap">lime · standard</figcaption></figure>
+      <figure style={{ margin: 0 }}><CardRender colourway="coral" scheme="visa" singleUse {...common} /><figcaption className="cap">coral · 1× single-use</figcaption></figure>
+      <figure style={{ margin: 0 }}><CardRender colourway="sage" scheme="mastercard" label="Enter card label here" {...common} /><figcaption className="cap">sage · label template</figcaption></figure>
+      <figure style={{ margin: 0 }}><CardRender colourway="taupe" scheme="mastercard-commercial" {...common} /><figcaption className="cap">taupe · commercial</figcaption></figure>
+    </div>
+    <p className="note">The Figma Card Library is the visual source of truth (figma.com/design/p2bdSeFycWMli0K1wUdnnG). These faces are drawn parametrically from tokens: colourway tone pair, wordmark or label, cardholder, masked number, labelled EXP/CVV and the scheme mark with its caption.</p>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script></body></html>

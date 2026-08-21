@@ -1,0 +1,88 @@
+<!-- @dsCard group="Web app" viewport="1512x900" name="Pliant internal app" subtitle="The dark ops shell, its cross-org lists, and Customer View rendering the whole external app" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pliant — internal app</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>html,body{margin:0;height:100%}body{font-family:var(--font-sans);overflow:hidden}#root{height:100vh}a{color:var(--primary-main)}a:hover{color:var(--primary-light)}</style>
+</head><body><div id="root"></div>
+<!-- The external app is REUSED wholesale for Customer View: same files, no fork. -->
+<script type="text/babel" src="../web_app/Bits.jsx"></script>
+<script type="text/babel" src="../web_app/Patterns.jsx"></script>
+<script type="text/babel" src="../web_app/Overlays.jsx"></script>
+<script type="text/babel" src="../web_app/data.jsx"></script>
+<script type="text/babel" src="../web_app/AppShell.jsx"></script>
+<script type="text/babel" src="../web_app/DashboardScreen.jsx"></script>
+<script type="text/babel" src="../web_app/WalletScreen.jsx"></script>
+<script type="text/babel" src="../web_app/AccountsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/TransactionsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/CardsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/CardRequestsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/MembersScreen.jsx"></script>
+<script type="text/babel" src="../web_app/TeamsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/AccountingExportScreen.jsx"></script>
+<script type="text/babel" src="../web_app/PaymentsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/RewardsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/MerchantsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/SettingsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/StatementsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/PoliciesScreen.jsx"></script>
+<script type="text/babel" src="../web_app/ModulesScreen.jsx"></script>
+<script type="text/babel" src="../web_app/IntegrationsScreen.jsx"></script>
+<script type="text/babel" src="../web_app/PlaceholderScreen.jsx"></script>
+<script type="text/babel" src="InternalAppShell.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="InternalOverlays.jsx"></script>
+<script type="text/babel" src="Screens.jsx"></script>
+<script type="text/babel" src="OrgDetailScreens.jsx"></script>
+<script type="text/babel" src="CustomerView.jsx"></script>
+<script type="text/babel">
+// The external destinations Customer View can reach, mirroring the external app's own map.
+const EXT_SCREENS = {
+  dashboard: 'DashboardScreen', wallet: 'WalletScreen', accounts: 'AccountsScreen',
+  cards: 'CardsScreen', 'card-requests': 'CardRequestsScreen',
+  members: 'MembersScreen', teams: 'TeamsScreen',
+  'not-exported': 'AccountingExportScreen', payments: 'PaymentsScreen',
+  statements: 'StatementsScreen', rewards: 'RewardsScreen', merchants: 'MerchantsScreen',
+  'settings-organization': 'SettingsScreen', 'settings-accounting': 'SettingsScreen',
+  'settings-card-templates': 'SettingsScreen', 'settings-policies': 'PoliciesScreen',
+  'settings-modules': 'ModulesScreen', 'settings-integrations': 'IntegrationsScreen',
+};
+window.EXT_SCREENS = EXT_SCREENS;
+const INT_SCREENS = {
+  organizations: 'IntOrganizationsScreen', 'int-members': 'IntMembersScreen',
+  'int-transactions': 'IntTransactionsScreen', partners: 'IntPartnersScreen',
+};
+// Internal destinations whose captures are in hand but not built yet (tranche 2).
+const INT_PENDING = {
+  'int-merchants': ['Merchants', null],
+  'program-settlements': ['Program Settlements', 'Settlements'],
+  'settlement-accounts': ['Program Settlement Accounts', 'Settlements'],
+  'settlement-files': ['Program Settlement Files', 'Settlements'],
+  'customer-repayments': ['Customer Repayment Batches', 'Repayments'],
+  'dd-collection-payout': ['Direct Debit Collection Payout', 'Repayments'],
+  'receivable-repayments': ['Receivable Repayments', 'Repayments'],
+  'customer-payouts': ['Payout Batches', 'Payouts'],
+  'cashback-payments': ['Cashback Payment Batches', 'Payouts'],
+  'compensation-payments': ['Compensation Batches', 'Payouts'],
+  'repayment-approval': ['Repayment Accounts Approval', 'Compliance'],
+  'coastal-templates': ['Coastal Report Templates', 'Compliance'],
+  'update-terms': ['Update Terms or Policies', null],
+};
+function App() {
+  const [screen, setScreen] = React.useState('organizations');
+  const [org, setOrg] = React.useState(null);
+  const nav = (s) => setScreen(s);
+  if (org) return <CustomerView org={org} onExit={() => setOrg(null)} />;
+  const name = INT_SCREENS[screen];
+  if (name) { const S = window[name]; return <S screen={screen} onNavigate={nav} onOpenOrg={setOrg} />; }
+  const [title, bc] = INT_PENDING[screen] || [screen, null];
+  return (
+    <InternalAppShell active={screen} onNavigate={nav} title={title} breadcrumb={bc}>
+      <p style={{ marginTop: 40, fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--text-secondary)' }}>Captured, not built yet — this screen arrives in internal tranche 2.</p>
+    </InternalAppShell>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>
