@@ -1,0 +1,369 @@
+{
+  "$comment": "Curated layer for scripts/sync/extract-components.mjs. Mechanical facts (source paths, exports, override modules, story names) are read from infinnity-frontend and must NOT be duplicated here. This file holds only what a human decided: which group a component belongs to, and guidance that is not derivable from the source. Reviewed by the design team.",
+
+  "groupOrder": [
+    "Core",
+    "Layout",
+    "Forms",
+    "Data",
+    "Feedback",
+    "Overlays",
+    "Navigation",
+    "Transitions"
+  ],
+
+  "readmeIntro": "Grouping extends `docs/03-components.md`, which names Core, Data, Feedback, Forms, Icon, Navigation and Card art. Those groups do not cover the whole export surface (MUI layout primitives, transition helpers and overlay parts are all exported too), so **Layout**, **Overlays** and **Transitions** were added here. Icon and Card art hold no `@pliant/ui` components at all — icons ship from `@pliant/icons` (see `docs/02-iconography-and-assets.md`) and card artwork is app-level, not library.\n\n**Where the restyling lives.** Almost none of these components carry Pliant styling in their own file. The look comes from `createTheme` plus 25 override modules, so each doc below inlines the override module that applies to it verbatim — that is the real answer to \"why does this look the way it does\". A component whose \"Pliant restyling\" section says *None* is MUI's default, restyled only by palette, typography and radius.",
+
+  "readmeOutro": "## Not in this library\n\n`docs/03-components.md` groups some components that are **not** part of `@pliant/ui`. They live in the app and are not synced here:\n\n| Named in docs/03 | Actually at | Note |\n|---|---|---|\n| Snackbar | `src/elements/Snackbar` | app-level |\n| MoneyField | `src/elements/MoneyField` | app-level |\n| VerificationCodeField | `src/elements/VerificationCodeField` | app-level |\n| DateField | — | no component by this name was found |\n| Sidebar | `src/components/Sidebar` | app-level; metrics in `docs/01-foundations.md` |\n| Tabs | `src/layout/Tabs` | app-level; restyled by app-side `MuiTabsOverrides` |\n| Drawer (record/filter) | `src/layout/Drawer` | `DetailsDrawer` / `FilterDrawer` wrap the library `Drawer` |\n| CardRender | — | no component by this name was found |\n| CardIcon | `src/domains/card/components/CardIcon` | app-level, domain |\n| Flag | `src/components/CountryFlag`, `src/components/CurrencyFlag` | app-level; renders `flag-icon-css` classes, not Figma SVGs |\n| FileUploadField | `src/components/FileUploadField` | app-level; replaces the deprecated Dropzone |\n| ChipAutocomplete, ChipSelect, Dropzone | `src/elements/` | deprecated per docs/03 — use Autocomplete, Select, FileUploadField |\n\nData tables are the biggest gap between the docs and this library: the product's tables are **MUI X DataGrid**, restyled app-side by `MuiDataGridOverrides`, not the `Table*` primitives exported here. The geometry in `docs/01-foundations.md` describes those DataGrids.",
+
+  "components": {
+    "Accordion": {
+      "group": "Navigation",
+      "summary": "Flat accordion: no elevation, no gutters, a hairline bottom border instead of a card edge.",
+      "rules": [
+        "`elevation={0}` and `disableGutters` are theme defaults — do not re-add elevation to make a panel stand out; use Paper for that.",
+        "The last panel deliberately squares off (`&:last-of-type { borderRadius: 0 }`) so a stack of panels reads as one list."
+      ]
+    },
+    "AccordionDetails": {
+      "group": "Navigation",
+      "summary": "Detail body of an Accordion. Its 32px bottom padding is set from the Accordion override, not here."
+    },
+    "AccordionSummary": { "group": "Navigation" },
+
+    "Alert": {
+      "group": "Feedback",
+      "summary": "Pliant wrapper that adds a footer action slot. Passing `action` renders it on its own row below the message, right-aligned — not inline in MUI's top-right corner.",
+      "api": "Adds a `neutral` severity on top of MUI's four. `neutral` only has a `standard` (tinted) form; there is no filled or outlined neutral.",
+      "rules": [
+        "Severity fills come from the `alert.*` tokens. `standard` sets both fill and content colour; `outlined` recolours text only.",
+        "Icons are fixed by the theme — neutral→Question, error→WarningCircle, warning→Warning, info→Info, success→CheckCircle. Do not pass a custom icon to make an alert look different."
+      ]
+    },
+    "AlertTitle": {
+      "group": "Feedback",
+      "summary": "Title row of an Alert. Uses the `alert-title` type token (16px/500), which is why it does not match `subtitle1`."
+    },
+
+    "Autocomplete": {
+      "group": "Forms",
+      "summary": "Wraps MUI Autocomplete and supplies the input for you: a Pliant `TextField`, `size=\"small\"`, with a magnifying-glass adornment.",
+      "api": "`searchIcon` (default `true`) toggles the adornment. `error`, `helperText`, `label` and `placeholder` are forwarded to the inner TextField. `renderInput` is optional here (MUI requires it) — override it only when the default input is genuinely wrong.",
+      "rules": [
+        "Replaces the deprecated `ChipAutocomplete` (docs/03).",
+        "Label rules follow TextField: pass `label`, or an `aria-label`/`aria-labelledby`.",
+        "The dropdown paper gets a divider border and elevation 8 from the theme."
+      ]
+    },
+    "Avatar": { "group": "Core" },
+    "AvatarGroup": { "group": "Core" },
+    "Backdrop": {
+      "group": "Overlays",
+      "summary": "Unstyled MUI backdrop. For a loading state over a section, use `LoaderWithOverlay`, which composes this with a spinner."
+    },
+    "Badge": {
+      "group": "Core",
+      "summary": "Numeric/dot badge. The theme's `colorSecondary` override reads a `badge` token group that **Pliant's own token set does not define** — so `color=\"secondary\"` falls back to MUI's default styling here, and only partner themes change it.",
+      "rules": [
+        "The lime accent count badge described in `docs/01-foundations.md` is not produced by `color=\"secondary\"` alone — check the call site before assuming."
+      ]
+    },
+    "BottomNavigation": { "group": "Navigation" },
+    "BottomNavigationAction": {
+      "group": "Navigation",
+      "summary": "Tightened for narrow bars: 8px horizontal padding, MUI's 80px minimum width removed, and labels truncate with an ellipsis instead of wrapping."
+    },
+    "Box": {
+      "group": "Layout",
+      "summary": "MUI's styling primitive. The house layout tool — reach for it before writing a styled component."
+    },
+    "Breadcrumbs": {
+      "group": "Navigation",
+      "summary": "Page headers pair a small breadcrumb line with a large title, always both (docs/01)."
+    },
+
+    "Button": {
+      "group": "Core",
+      "summary": "MUI Button, re-exported. Every visual decision lives in the theme: `variant=\"contained\"` is the default (MUI's is `text`), elevation is off, corners are 8px, and labels are sentence case.",
+      "api": "Adds a `neutral` colour. Sizes map to the `button-small` / `button-medium` / `button-large` type tokens, so size changes type as well as padding.",
+      "rules": [
+        "Contained near-black is the primary action — **one per view**. Outlined is secondary, text is tertiary (docs/03).",
+        "Sentence case, never uppercase (`textTransform: 'none'` is set in the theme; do not override it).",
+        "`variant` may be omitted for a primary button since contained is the default.",
+        "Only `primary` gets the near-black treatment from the override; semantic colours use the MUI palette."
+      ]
+    },
+    "ButtonBase": {
+      "group": "Core",
+      "summary": "Unstyled interactive surface. Use only when no real button or link fits; it carries none of the Pliant button styling."
+    },
+    "ButtonGroup": { "group": "Core" },
+    "Card": { "group": "Core" },
+    "CardContent": { "group": "Core" },
+    "CardMedia": { "group": "Core" },
+
+    "Checkbox": {
+      "group": "Forms",
+      "summary": "MUI Checkbox with the colour choice narrowed to `primary` (default) or `default` — the semantic palette colours are deliberately unavailable."
+    },
+    "Chip": {
+      "group": "Data",
+      "summary": "MUI Chip plus a Pliant-only `tinted` variant: the label colour at full strength on a low-alpha wash of the same colour.",
+      "api": "Adds `variant=\"tinted\"`. Tinted `default` and tinted `primary` render identically (both are an 8% near-black wash) — primary is not a separate look.",
+      "rules": [
+        "Label typography comes from the `chip-label` token; shadows are forcibly removed.",
+        "For a read-only status pill, prefer `StatusBadge` — it is the uppercase micro-label used across the product. Chip is for interactive or removable items."
+      ]
+    },
+    "CircularProgress": {
+      "group": "Feedback",
+      "summary": "Spinner with named sizes (small 18px, medium 32px, large 64px) and a fixed 3px stroke, so loading states stay consistent.",
+      "api": "**`aria-label` is required** by the type. In `determinate` mode it renders a grey track behind the value ring; MUI does not.",
+      "rules": [
+        "Pass one of the named sizes, not a pixel number — the numeric MUI `size` is replaced by this union."
+      ]
+    },
+    "Collapse": { "group": "Transitions" },
+
+    "Dialog": {
+      "group": "Overlays",
+      "summary": "Always full-width for its breakpoint: `fullWidth` is forced on and removed from the prop type. Width is controlled with `maxWidth`.",
+      "rules": [
+        "Below `md` the dialog insets itself by 8px on every side unless `fullScreen`.",
+        "Switch rows inside dialogs put the switch first, label second — the reverse of settings pages (docs/03)."
+      ]
+    },
+    "DialogActions": {
+      "group": "Overlays",
+      "summary": "24px padding, dropping to 16px horizontally below `sm` — matching DialogTitle so the three dialog slots line up."
+    },
+    "DialogContent": { "group": "Overlays" },
+    "DialogTitle": {
+      "group": "Overlays",
+      "summary": "24px padding, dropping to 16px horizontally below `sm`."
+    },
+    "Divider": {
+      "group": "Core",
+      "summary": "The house separator. Pliant favours borders and dividers over shadows (docs/01)."
+    },
+    "Drawer": {
+      "group": "Overlays",
+      "summary": "Unstyled MUI Drawer. The product's record and filter drawers are app-level wrappers (`src/layout/Drawer`) — `DetailsDrawer` opens right, `maxWidth: 600`, elevation 8, **no backdrop**; `FilterDrawer` is 320px wide and keeps its scrim.",
+      "rules": [
+        "See `docs/04-patterns.md` for which drawer to use. Note the width there (524px) does not match the current `DetailsDrawer` code — raised in SYNC-FINDINGS.md."
+      ]
+    },
+
+    "Fade": { "group": "Transitions" },
+    "FormControl": { "group": "Forms" },
+    "FormControlLabel": {
+      "group": "Forms",
+      "summary": "With `labelPlacement=\"start\"` the theme spreads label and control apart (`space-between`, no left margin) — this is what produces the settings-page row with the label left and the switch hard right.",
+      "rules": [
+        "Settings pages: label left, control right (`labelPlacement=\"start\"`). Dialogs: control left, label right — the default (docs/03)."
+      ]
+    },
+    "FormControlLabelTooltipIcon": {
+      "group": "Forms",
+      "summary": "16px info icon in a tooltip, tinted `text.secondary`, for explaining a checkbox/switch row label. Takes Tooltip's props minus `children`.",
+      "usage": "Pass the explanation as `title`. Sits inline after the label text."
+    },
+    "FormGroup": { "group": "Forms" },
+    "FormHelperText": {
+      "group": "Forms",
+      "summary": "Uses the `helper-text` token (12px). Error text and hint text share this style — colour is what distinguishes them."
+    },
+    "FormLabel": { "group": "Forms" },
+    "Grid": { "group": "Layout" },
+    "Grow": { "group": "Transitions" },
+
+    "IconButton": {
+      "group": "Core",
+      "summary": "MUI IconButton with two Pliant additions: **`aria-label` is required by the type**, and a `primary-contained` colour gives the filled near-black circular button.",
+      "api": "`color=\"primary-contained\"` is a Pliant colour, not a MUI one — MUI IconButton has no variant system, so a colour carries the filled look. A `selected` class applies the theme's selected background (this is how `MenuContainer` marks an open trigger).",
+      "rules": [
+        "Every icon button needs a real `aria-label`; the build fails without one.",
+        "The bordered circular collapse control on the sidebar is an IconButton (docs/01)."
+      ]
+    },
+    "InputAdornment": { "group": "Forms" },
+    "InputLabel": {
+      "group": "Forms",
+      "summary": "Always shrunk and positioned above the field: `shrink` is a theme default and MUI's floating-label transform is disabled outright. The label sits 4px in from the top-left, and the input below it is pushed down 24px.",
+      "rules": [
+        "Pliant fields do not animate a label into the border notch — labels always sit above. The `transform: none !important` in the override is flagged TEMPORARY in the source (MUI 4 legacy)."
+      ]
+    },
+    "InputLabelTooltipIcon": {
+      "group": "Forms",
+      "summary": "16px info icon in a tooltip for a field label. Absolutely positioned, so it can sit next to the label without affecting field layout.",
+      "usage": "Sibling of the field's `InputLabel`. For checkbox/switch rows use `FormControlLabelTooltipIcon` instead."
+    },
+
+    "LinearProgress": {
+      "group": "Feedback",
+      "summary": "Progress bar with named sizes (4/8/12px, radius half the height) on a grey track. Defaults to `determinate` — pass `indeterminate` or `query` when there is no value.",
+      "api": "Requires `aria-label` or `aria-labelledby`."
+    },
+    "Link": {
+      "group": "Core",
+      "summary": "MUI Link with a Pliant focus ring (2px outline, 2px offset) and no outline on mouse focus.",
+      "rules": [
+        "`color=\"primary\"` resolves to the `link` token when a theme defines one; Pliant's own token set does not, so it falls back to near-black `primary.main`."
+      ]
+    },
+    "List": { "group": "Navigation" },
+    "ListItem": { "group": "Navigation" },
+    "ListItemAvatar": { "group": "Navigation" },
+    "ListItemButton": { "group": "Navigation" },
+    "ListItemIcon": { "group": "Navigation" },
+    "ListItemText": { "group": "Navigation" },
+    "ListItemTextReversed": {
+      "group": "Navigation",
+      "summary": "`ListItemText` with the rows flipped (`column-reverse`) so the secondary line reads above the primary one — for label-over-value rows."
+    },
+    "ListSubheader": { "group": "Navigation" },
+    "LoaderWithOverlay": {
+      "group": "Feedback",
+      "summary": "Section-level loading state: a translucent white backdrop (absolutely positioned, so it covers its nearest positioned ancestor rather than the page) with a centred spinner.",
+      "api": "`loading` drives it. `aria-label` defaults to `\"Loading\"`; remaining props go to the inner CircularProgress.",
+      "rules": [
+        "The container must be `position: relative` or the overlay escapes to the wrong ancestor."
+      ]
+    },
+
+    "Menu": {
+      "group": "Overlays",
+      "summary": "Dense by default, anchored bottom-right to top-right, and capped at 40vh so long menus scroll rather than run off screen.",
+      "rules": [
+        "Menu items pick up the `menu-item-dense` token because of the dense default — the denser 14px type is the norm, not an exception."
+      ]
+    },
+    "MenuContainer": {
+      "group": "Overlays",
+      "summary": "Owns menu open/close state so callers do not have to. Give it a trigger and children; it wires up the anchor, marks the trigger `selected` while open, and closes the menu after a child's `onClick` runs.",
+      "api": "`button` is either an element or a function receiving the open handler. `buttonSelectedClass` defaults to `\"selected\"`, which the IconButton override styles.",
+      "rules": [
+        "Children must be elements that accept `onClick` — it is cloned onto each one."
+      ]
+    },
+    "MenuItem": {
+      "group": "Overlays",
+      "summary": "Typography comes from the `menu-item` token, or `menu-item-dense` when dense — which is the default inside `Menu`."
+    },
+    "MenuList": { "group": "Overlays" },
+    "MobileStepper": {
+      "group": "Navigation",
+      "summary": "Locked to `variant=\"progress\"` and `position=\"static\"`, with the same named size scale as LinearProgress (4/8/12px)."
+    },
+
+    "Paper": {
+      "group": "Core",
+      "summary": "MUI Paper plus a Pliant-only `tinted` variant that fills with the warm contrast surface — the standard way to set a panel apart without elevation.",
+      "api": "Adds `variant=\"tinted\"`.",
+      "rules": [
+        "Prefer `variant=\"outlined\"` or `tinted` over elevation: borders over shadows (docs/01)."
+      ]
+    },
+    "PaperLabeledValue": {
+      "group": "Data",
+      "summary": "Outlined Paper row with a caption label on the left and a value on the right — the read-only detail row used across record views.",
+      "api": "`label` is a string, `value` is any node. Ships with its own 16px padding and 16px bottom margin, so stack them directly."
+    },
+    "Popover": {
+      "group": "Overlays",
+      "summary": "Same bottom-right/top-right anchoring as Menu, with a divider border on the paper."
+    },
+    "Popper": { "group": "Overlays" },
+    "PreviewTooltip": {
+      "group": "Feedback",
+      "summary": "Tooltip that shows an image instead of text — white surface, elevation 4, 192px tall, capped at 40vw. Used for receipt and document thumbnails.",
+      "api": "`src` may be null/undefined, in which case no tooltip content renders."
+    },
+
+    "Radio": {
+      "group": "Forms",
+      "summary": "Colour narrowed to `primary` (default) or `default`, like Checkbox and Switch."
+    },
+    "RadioGroup": {
+      "group": "Forms",
+      "api": "Requires `aria-label` or `aria-labelledby` — a radio group has no visible label of its own."
+    },
+    "Select": {
+      "group": "Forms",
+      "summary": "Outlined select, full-width and small by default, on a white fill. `variant`, `label`, `fullWidth` and `notched` are removed from the prop type because the theme fixes them.",
+      "api": "Labelling is required in one of three ways: `labelId` pointing at an `InputLabel`, `aria-label`, or `aria-labelledby`. Re-exports `SelectChangeEvent` for typing handlers.",
+      "rules": [
+        "Replaces the deprecated `ChipSelect` (docs/03).",
+        "Pair with `InputLabel` + `FormControl` for a labelled field; the label sits above, never in the notch."
+      ]
+    },
+    "Slider": { "group": "Forms" },
+    "Stack": { "group": "Layout" },
+    "StatusBadge": {
+      "group": "Data",
+      "summary": "The product's status pill: an uppercase micro-label on a tinted or solid fill, 8px radius, ellipsised. Not a MUI component — a Box with token-driven colours.",
+      "api": "`label` (string, required), `variant` — `tinted` (default) or `filled` — and `color` (`default` | `primary` | `secondary` | `success` | `error` | `info` | `warning`). Tinted colours reuse the `alert.*` fill/content pairs; filled uses the palette. Memoised and forwards a ref.",
+      "rules": [
+        "Uppercasing comes from MUI's `overline` variant default, not from the token — the `overline` token itself sets no `text-transform`.",
+        "Count suffixes (\"PAID (10)\") are part of the `label` string; there is no count prop.",
+        "Status→colour mapping is not encoded here. `docs/08-decisions-log.md` open question 1 tracks formalising it, and the product is known to be inconsistent (REQUESTED renders differently between Wallet and Cards)."
+      ]
+    },
+    "Step": { "group": "Navigation" },
+    "StepButton": { "group": "Navigation" },
+    "StepConnector": { "group": "Navigation" },
+    "StepIcon": { "group": "Navigation" },
+    "StepLabel": {
+      "group": "Navigation",
+      "summary": "Active and completed step labels switch to `subtitle2` (14px/500); upcoming steps stay at the default weight."
+    },
+    "Stepper": { "group": "Navigation" },
+    "Switch": {
+      "group": "Forms",
+      "summary": "Colour narrowed to `primary` (default) or `default`.",
+      "rules": [
+        "Settings pages: label left, switch right. Dialogs: switch left, label right (docs/03) — set via `FormControlLabel`'s `labelPlacement`."
+      ]
+    },
+
+    "Table": {
+      "group": "Data",
+      "summary": "MUI's table primitive, exported unrestyled. **The product's data tables are MUI X DataGrid**, restyled app-side; these primitives are for small static tables inside dialogs and panels.",
+      "rules": [
+        "Cell typography (`body2`), divider borders and uppercase headers come from the app-level `MuiTableOverrides`, which is not part of this package — a prototype importing only `@pliant/ui` will not get them.",
+        "The table geometry in `docs/01-foundations.md` (56px header, 52px rows, 72px media rows) describes DataGrid, not these components."
+      ]
+    },
+    "TableBody": { "group": "Data" },
+    "TableCell": { "group": "Data" },
+    "TableContainer": { "group": "Data" },
+    "TableFooter": { "group": "Data" },
+    "TableHead": { "group": "Data" },
+    "TableRow": { "group": "Data" },
+    "TableSortLabel": { "group": "Data" },
+    "TextField": {
+      "group": "Forms",
+      "summary": "Outlined text field, full-width and small by default. `variant`, `color` and `fullWidth` are removed from the prop type — outlined is the only form.",
+      "api": "Labelling is enforced by the type: pass `label`, `aria-label`, or `aria-labelledby`. The label is always shrunk and the border notch always closed.",
+      "rules": [
+        "16px input text (`input-text` token) on a white fill with a 16%-black border; the disabled border drops to 12%.",
+        "For a field with an explainer icon, add `InputLabelTooltipIcon`."
+      ]
+    },
+    "Tooltip": {
+      "group": "Feedback",
+      "summary": "Always has an arrow — `arrow` is forced on and removed from the prop type. Dark 75%-black surface with the `tooltip-label` token.",
+      "usage": "For image previews use `PreviewTooltip`; for a label explainer use one of the TooltipIcon components."
+    },
+    "Typography": {
+      "group": "Core",
+      "summary": "MUI Typography with two extra Pliant variants: `caption2` (10px) and `overline2` (10px, auto-uppercase).",
+      "api": "Adds `caption2` and `overline2` to the variant union.",
+      "rules": [
+        "`overline2` uppercases itself via the token. Plain `overline` inherits uppercasing from MUI's default instead.",
+        "Uppercase is reserved for table headers, overlines and micro-labels (docs/01)."
+      ]
+    }
+  }
+}

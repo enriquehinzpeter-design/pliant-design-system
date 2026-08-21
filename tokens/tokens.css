@@ -1,0 +1,16 @@
+/* Pliant design tokens — single entry point.
+ *
+ * Import this one file to get every token as a CSS custom property:
+ *   @import url('tokens/tokens.css');
+ *
+ * Load order matters only for fonts.css (it must be reachable for @font-face
+ * to resolve); the custom-property files are independent.
+ *
+ * See tokens/README.md for provenance and naming.
+ */
+
+@import url('./fonts.css');
+@import url('./colors.css');
+@import url('./typography.css');
+@import url('./shape.css');
+@import url('./elevation.css');

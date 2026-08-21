@@ -12,14 +12,14 @@ Load ONLY what the task needs. Do not read the whole repo.
 | Your task | Read |
 |---|---|
 | Any task (always start here) | `docs/00-overview.md` |
-| Anything visual: colors, type, spacing, radius, elevation | `docs/01-foundations.md` |
+| Anything visual: colors, type, spacing, radius, elevation | `docs/01-foundations.md`; exact values in `tokens/` (`tokens/README.md` first) |
 | Icons, logos, card artwork, country flags | `docs/02-iconography-and-assets.md` |
-| Which component to use and how | `docs/03-components.md`, then the component's folder in `components/` |
+| Which component to use and how | `docs/03-components.md`, then `components/README.md` and the component's own folder |
 | Dialogs, drawers, wizards, tables, filters, approvals | `docs/04-patterns.md` |
 | Building/prototyping a **customer-facing (external app)** feature | `docs/05-external-app.md` — do NOT load 06 |
 | Building/prototyping an **internal ops (back-office)** feature | `docs/06-internal-app.md` — do NOT load 05 unless composing Customer View |
 | Writing UI copy, labels, empty states, formats | `docs/07-content-and-voice.md` |
-| Resolving a conflict between sources, or checking an open question | `docs/08-decisions-log.md` |
+| Resolving a conflict between sources, or checking an open question | `docs/08-decisions-log.md`, then `SYNC-FINDINGS.md` for unresolved code-vs-docs deltas |
 | Page scaffolding for a new screen | `templates/` |
 | Reference renders of real screens | `ui-kits/web-app/` or `ui-kits/internal-app/` |
 

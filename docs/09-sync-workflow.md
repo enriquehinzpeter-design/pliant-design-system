@@ -2,7 +2,7 @@
 
 Upstream truths: `infinnity-frontend` (tokens, component code, behavior) and the two canonical Figma libraries (cards, flags). This repo is the distribution layer.
 
-1. **Design-system release in code** → run `/design-sync` from Claude Code in this repo to pull the updated design system → PR → design-team review → merge.
+1. **Design-system release in code** → run `/design-sync` from Claude Code in this repo to pull the updated design system → PR → design-team review → merge. `tokens/` and `components/` are generated: the concrete extractor commands (and what they will and will not overwrite) are in `MIGRATION.md`. Anything the extractors surface as a conflict with these docs goes to `SYNC-FINDINGS.md` for a design call — a sync never silently rewrites a documented decision.
 2. **Merge** → consumers update: Claude Design re-syncs from this repo; the plugin auto-updates for Claude Code/Cowork users; Cursor and harnesses read the repo directly.
 3. **New assets/decisions** → edit the relevant `docs/` file + `08-decisions-log.md` in the same PR.
 4. Rollback = git revert. Ownership: design team (CODEOWNERS to be added).
