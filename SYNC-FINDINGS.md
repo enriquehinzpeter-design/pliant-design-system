@@ -53,7 +53,7 @@ That stylesheet also shows Geist ships as a **variable font covering 100–900**
 file. "Weights 400, 500 only" is true of the tokens, not of the font — worth stating that way,
 since the extra weights are one CSS declaration away.
 
-### 4. Country flags are a CSS icon library, not Figma SVGs
+### 4. Country flags are a CSS icon library, not Figma SVGs — RESOLVED
 
 `docs/02-iconography-and-assets.md` and `docs/08` describe flags as SVGs exported from the
 Figma flag library, ISO-keyed, with a pending 240-flag export (open question 5).
@@ -63,9 +63,17 @@ against **`flag-icon-css`**, loaded in `index.html` from
 `%REACT_APP_ASSETS_URL%/libs/flag-icon-css/css/flag-icons.min.css`. No flag SVGs ship in the
 repo. The documented 16×22 geometry is right (`height: spacing(2)`, `width: spacing(2.75)`).
 
-Consequences worth deciding on: the app already covers every ISO code, so the "full 240-flag
-export pending" question may be moot; and a prototype that hand-places Figma flag SVGs will not
-match the product, which uses the library.
+**Resolution (design team, 2026-08-21):** the two agree on what matters. Production's
+`flag-icon-css` and the design system's `Flag` / `FlagLabel` component both render **by ISO
+3166-1 alpha-2 code into a 16×22 slot** — the code is the key, the artwork is an implementation
+detail behind it. So a country is added **by code, not by shipping a file**, and there is no
+`assets/flags/` layer to export: `docs/08` open question 5 ("full 240-flag export pending") is
+closed, and `MIGRATION.md` records `assets/flags/` as resolved. The Figma node
+(`g1YQZdrVs2KJtFwfxgtTmD` `6436:37649`) stays in `docs/02` as the artwork reference.
+
+One difference to keep in view rather than reconcile: production's library draws a **rectangular**
+16×22 flag, the Figma artwork is a **circle** at 16×16 centred in the 22px slot. Row metrics match
+either way. Revisit only if a design depends on the flag's silhouette.
 
 ### 5. Record drawer is `maxWidth: 600`, not 524px
 
@@ -76,6 +84,17 @@ not. `FilterDrawer` is 320px (not documented) and keeps its backdrop.
 
 Either the code drifted from the decision or the decision was never implemented — a design call,
 not something a sync should silently rewrite.
+
+**Still open.** `guidelines/spacing-layout.card.html` now reads "maxWidth: 600; ~524px at desktop
+widths; no scrim", which reconciles the two numbers for anyone reading the specimen card, but
+`docs/04-patterns.md` and the `docs/08` canonical table still say **524px** flat. Settle which is
+authoritative and update those two.
+
+Worth checking when you do: the 524px figure came from measuring the reference screenshots, which
+the web-app kit README states were captured at a **1530px viewport, 1:1**. If the capture was
+actually a scaled 1750px window, 600 × (1530 ÷ 1750) ≈ **524.6** — i.e. the drawer may always have
+been 600px and the measurement a scaling artefact. That is arithmetic, not evidence; confirm
+against a live measurement before recording it as the answer.
 
 ### 6. `--content-max-width: 840px` is not a variable
 
@@ -141,6 +160,31 @@ the round mark carries no `currentColor` at all.
 Applied to `docs/02-iconography-and-assets.md` and `assets/README.md`. Nothing to change in the
 SVGs. This entry stays as the record of the call; fold it into `docs/08-decisions-log.md` with the
 others.
+
+### 12. Metal card texture was never supplied
+
+`CardRender`'s brushed-metal finish is plumbed but **opt-in** (`texture`), because the asset it
+would request has never been delivered: `assets/cards/metal-brushed.jpg`, the JPEG fill layer that
+rides inside the vector geometry. The **engraved bird** (detail-art asset 11) is the other metal
+raster and is also unsupplied.
+
+Until both land, `colourway="metal"` renders its flat tone pair — correct geometry, correct tones
+(`#c6c6c6` / `#d9d9d9`), missing finish. Nothing is broken and nothing requests a missing file, so
+this is a completeness gap rather than a defect.
+
+**Needed:** the two JPEGs, exported from the Card Library detail art. They are the only raster
+Pliant card artwork still requires — every other surface, including the black physical card, is
+fully vector.
+
+### 13. BAS Fadiro integration logo still missing
+
+`docs/08` open question 4 listed four missing marketplace logos: Agicap, BAS Fadiro, bookman and
+BuchhaltungsButler. Three were found in the codebase and are now committed under
+`assets/integrations/`. **BAS Fadiro is not in `infinnity-frontend` at all** and remains missing.
+
+The integrations screen renders a neutral initial tile for it rather than approximating the mark —
+correct behaviour, but the marketplace is incomplete until the real logo is supplied. Reduce
+`docs/08` open question 4 from four logos to this one.
 
 ## Not captured by this sync
 

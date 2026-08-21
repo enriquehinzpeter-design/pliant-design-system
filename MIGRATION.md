@@ -22,16 +22,22 @@ Remaining layers:
 - [x] `assets/integrations/` — synced 2026-08-21. Agicap, bookman, BuchhaltungsButler — three of
       the four logos `docs/08` open question 4 records as missing. **BAS Fadiro is not in the
       codebase and remains open.**
-- [ ] `assets/cards/` — vector card library (139 assets). Figma 💳 Card Library
-      `p2bdSeFycWMli0K1wUdnnG`: nodes `5461:68990` (renders), `5461:73221` (in-app icons),
-      `4935:3695` (physical), `4935:2813` (detail art). Not in the codebase — pull via the Figma
-      pipeline.
-- [ ] `assets/flags/` — Figma flag library `g1YQZdrVs2KJtFwfxgtTmD`, node `6436:37649`
-      (each flag a named child `Country=<ISO> <Name>`, `Country=X Generic` as the fallback).
-      **Read `SYNC-FINDINGS.md` §4 first:** the app renders flags from the `flag-icon-css`
-      library, not SVG exports, so decide whether this layer is still wanted before exporting.
-- [ ] Resolve `SYNC-FINDINGS.md` — 11 code-vs-docs deltas found by the sync; 10 still need a
-      design-team call, then a line in `docs/08-decisions-log.md` (§11 is resolved and applied)
+- [x] `assets/cards/` — **resolved.** Parametric `CardIcon` / `CardRender` components are canonical;
+      there is no per-colourway asset layer to export and the old sliced PNGs were deleted upstream.
+      The traced source vectors are archived under `assets/cards/source/` (nodes `5461:73221`,
+      `4935:3695`); the detail-art bundle (`4935:2813`) exceeds the sync read cap and must be
+      exported from Figma directly if wanted. Node references live in `docs/02-iconography-and-assets.md`.
+      Still outstanding: the metal brushed texture (`SYNC-FINDINGS.md`).
+- [x] `assets/flags/` — **resolved.** No file export needed: production (`flag-icon-css`) and the
+      design system's `Flag` component agree on ISO-keyed rendering in a 16×22 slot, so a country is
+      added by code, not by shipping an SVG. Figma node `g1YQZdrVs2KJtFwfxgtTmD` `6436:37649` is
+      recorded in `docs/02-iconography-and-assets.md` as the artwork reference. See
+      `SYNC-FINDINGS.md` §4.
+- [ ] Resolve `SYNC-FINDINGS.md` — 13 entries; **2 resolved and applied** (§4 flags, §11 logo
+      colour), 11 open. Two of the open ones are supply gaps rather than decisions: §12 the metal
+      texture JPEGs, §13 the BAS Fadiro logo. §5 (record drawer) still needs a call — the
+      guidelines card now carries reconciled wording, but `docs/04` and the `docs/08` canonical
+      table still say 524px flat.
 - [ ] `docs/legacy-DESIGN-SYSTEM.md` — delete after confirming all content migrated to modular docs
 - [ ] Add CODEOWNERS (design team) + branch protection
 - [ ] Re-point Claude Design to import from this repo; register plugin in the org catalog

@@ -45,18 +45,21 @@ metadata are the content. Restoring live rendering would mean also importing the
 its `tokens/*.css` (a different naming scheme from this repo's `--pliant-*` tokens) and the compiled
 bundle.
 
-## Two cards carry claims this repo has since revised
+## Two cards were corrected after import
 
-Imported verbatim rather than silently edited — resolve them the same way as everything in
-`SYNC-FINDINGS.md`:
+Everything else is verbatim. These two carried claims this repo has since revised, and were edited
+to match:
 
-- **`brand-logo.card.html`** says all three marks are "currentColor SVG" and that the wordmark
-  "inherits currentColor". Per **`SYNC-FINDINGS.md` §11** (resolved 2026-08-21) that is true of the
-  wordmark and icon mark only — `pliantRoundLogo.svg` is intentionally full-colour, the lime app-icon.
-  The card also references `../assets/logo.svg` / `logo-icon.svg` / `logo-round.svg`, which are named
-  `pliantLogo.svg` / `pliantIconLogo.svg` / `pliantRoundLogo.svg` in this repo's `assets/logos/`.
-- **`spacing-layout.card.html`** gives the record drawer as **524px**, matching `docs/04-patterns.md`
-  and `docs/08`. The code says `maxWidth: 600` (**`SYNC-FINDINGS.md` §5**). Note that 524px here is an
-  independent measurement — the web-app kit README states its overlay geometry was measured off the
-  reference screenshots at a 1530px viewport, 1:1 — so this is a third data point for that open
-  question, not a copy of the docs.
+- **`brand-logo.card.html`** — was "all three marks are currentColor SVG". Now states that the
+  wordmark and icon mark inherit `currentColor` while the **round mark is intentionally full-colour**
+  (the lime app-icon), per **`SYNC-FINDINGS.md` §11**, resolved 2026-08-21.
+  Still uncorrected: the card loads `../assets/logo.svg` / `logo-icon.svg` / `logo-round.svg`, which
+  are named `pliantLogo.svg` / `pliantIconLogo.svg` / `pliantRoundLogo.svg` in this repo's
+  `assets/logos/`. Left alone because the card cannot render here anyway (see above) — fix the paths
+  if it is ever wired up.
+- **`spacing-layout.card.html`** — was a flat **524px** for the record drawer. Now reads
+  "maxWidth: 600; ~524px at desktop widths; no scrim", reconciling the measured figure with the code.
+  **`SYNC-FINDINGS.md` §5 stays open**: `docs/04-patterns.md` and the `docs/08` canonical table still
+  say 524px flat, and which is authoritative is a design call. Worth knowing that 524px was an
+  independent measurement — the web-app kit README states overlay geometry was measured off the
+  reference screenshots at a 1530px viewport, 1:1.
