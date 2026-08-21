@@ -75,35 +75,55 @@ One difference to keep in view rather than reconcile: production's library draws
 16×22 flag, the Figma artwork is a **circle** at 16×16 centred in the 22px slot. Row metrics match
 either way. Revisit only if a design depends on the flag's silhouette.
 
-### 5. Record drawer is `maxWidth: 600`, not 524px
+### 5. Record drawer is 600px — RESOLVED, and it exposed a capture-scale artifact
 
 `docs/04-patterns.md` and the canonical-decision table in `docs/08` say 524px, no scrim.
 `src/layout/Drawer/DetailsDrawer.tsx` sets `width: '100%'`, `maxWidth: 600`, `elevation={8}`,
 `anchor="right"`, `hideBackdrop`, `zIndex: 1300`. The no-scrim half is confirmed; the width is
 not. `FilterDrawer` is 320px (not documented) and keeps its backdrop.
 
-Either the code drifted from the decision or the decision was never implemented — a design call,
-not something a sync should silently rewrite.
+**Resolution (design team, 2026-08-21): the drawer is 600px.** Code is the truth —
+`DetailsDrawer`'s paper is `width: '100%'`, `maxWidth: 600`, and no caller overrides it. The 524px
+in the docs was never a design decision; it was a **measurement artifact**.
 
-**Still open.** `guidelines/spacing-layout.card.html` now reads "maxWidth: 600; ~524px at desktop
-widths; no scrim", which reconciles the two numbers for anyone reading the specimen card, but
-`docs/04-patterns.md` and the `docs/08` canonical table still say **524px** flat. Settle which is
-authoritative and update those two.
+**The capture pipeline ran at ≈0.873 scale**, proven by two independent ratios against code-verified
+values:
 
-Worth checking when you do: the 524px figure came from measuring the reference screenshots, which
-the web-app kit README states were captured at a **1530px viewport, 1:1**. If the capture was
-actually a scaled 1750px window, 600 × (1530 ÷ 1750) ≈ **524.6** — i.e. the drawer may always have
-been 600px and the measurement a scaling artefact. That is arithmetic, not evidence; confirm
-against a live measurement before recording it as the answer.
+| Measured | Code | Ratio |
+|---|---|---|
+| Record drawer 524px | 600px (`DetailsDrawer`) | **0.8733** |
+| Sidebar rail 230.5px | 264px (`Sidebar/style.tsx` `drawerWidth`) | **0.8731** |
 
-### 6. `--content-max-width: 840px` is not a variable
+Two unrelated components agreeing to four decimal places is not coincidence — every absolute pixel
+value measured off those screenshots is ~12.7% under-reported. Divide by 0.873 to recover the real
+figure.
 
-`docs/01-foundations.md` presents it as a custom property; `docs/08` already marks it "observed
+**Applied:** `docs/01`, `docs/04`, `docs/08` and `guidelines/spacing-layout.card.html` now say 600px;
+both UI-kit READMEs carry the scale caveat; and §6 below is corrected as the same artifact.
+
+**Next candidates, not yet corrected** — same artifact, no code value confirmed for most of them:
+the filter drawer reads 283px but code says **320px** (`FilterDrawer` `width={isBelowSm ? '100%' : 320}`,
+ratio 0.884 — soft-edge measurement error); the form dialog 392px, wizard 734px, notifications
+popover 334px, workspace-modal insets and the ~107px kebab are all measured and unverified. The
+specimen card now warns about this rather than presenting them as exact.
+
+### 6. Content max-width: not a variable, and 840px was the same artifact
+
+`docs/01-foundations.md` presented it as a custom property; `docs/08` already marked it "observed
 — pending engineering confirmation". Evidence: no such custom property or shared constant
-exists. 840 appears twice as a local hard-code —
+exists. Nothing caps settings or detail pages centrally.
+
+**Corrected 2026-08-21 to ≈960px.** The 840px figure was measured off the same screenshots as the
+record drawer, so it carries the same **×0.873** capture scale (§5): 840 ÷ 0.873 ≈ **962**. Applied
+to `docs/01`, `docs/05` and the `docs/08` canonical table as "≈960px (observed-corrected)".
+
+**Two things to keep in view.** First, this is still an *observed* number — corrected observation,
+not a code constant, so "pending engineering confirmation" stands. Second, 840 also appears twice
+in code as unrelated local hard-codes:
 `src/domains/settings/components/IntegrationImage` (`max-width: 840px`) and
-`src/domains/partner/components/PartnerLegalDisclaimer` (`maxWidth={840}`). Nothing caps
-settings or detail pages centrally.
+`src/domains/partner/components/PartnerLegalDisclaimer` (`maxWidth={840}`). Those are a component
+image cap and a legal-text column, not the page content cap — do **not** let a future grep for
+"840" talk anyone into reverting the ≈960 figure.
 
 ### 7. Table geometry is inherited, not set — and one number is unverified
 

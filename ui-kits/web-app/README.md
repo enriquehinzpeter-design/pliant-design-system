@@ -20,7 +20,7 @@ Dashboard · Wallet · **Members & Teams** (Members, Teams) · Accounts · **Car
 | `Overlays.jsx` | The interaction layer: Invite-member dialog, Request-card wizard step 1, transactions Filter drawer, card detail drawer, member detail drawer, Create-team dialog, Accounts kebab menu, Top-up dialog, notifications popover, Receipt Inbox workspace modal — each a thin composition over `components/patterns/` | A2–A5, A7, B1–B4, D1, D2 |
 | `data.jsx` | Demo data transcribed from the screenshots | — |
 | `DashboardScreen.jsx` | Financial Overview, # Members, # Cards, Top Spenders, Last Transactions, regulatory footer; header actions open the invite dialog and the request-card wizard | 01, A1, A2, A3 |
-| `TransactionsScreen.jsx` | My / All / Needs Review / Flagged (+ FLAG REASON column), 524px record drawer, Filter drawer | 02, 03, 04, 20, A4, A5, A6 |
+| `TransactionsScreen.jsx` | My / All / Needs Review / Flagged (+ FLAG REASON column), 600px record drawer, Filter drawer | 02, 03, 04, 20, A4, A5, A6 |
 | `CardsScreen.jsx` | Card inventory, status pills, limit meters, sortable Status, card detail drawer (columns collapse while it is open) | 05, A7 |
 | `CardRequestsScreen.jsx` | Pending requests / Archive (APPROVED badges + REQUEST STATUS column), age subtext, approver chips | 19, C9 |
 | `MembersScreen.jsx` | INVITED pills, team pills, card thumbnails, member detail drawer | 06, B1 |
@@ -40,11 +40,22 @@ Dashboard · Wallet · **Members & Teams** (Members, Teams) · Accounts · **Car
 
 ## Overlay geometry
 
-Measured from the reference screenshots (1530px viewport, 1:1):
+> **Capture-scale caveat.** Absolute pixel values measured from reference screenshots carry a
+> **×0.873 capture scale** — the pipeline that produced them was not 1:1, despite the note below.
+> Divide a measured figure by 0.873 to recover the real value. Proven by two independent ratios
+> against code: the record drawer (524 ÷ 600 = 0.8733) and the sidebar rail (230.5 ÷ 264 = 0.8731).
+> **Code-verified values in `docs/01-foundations.md` are authoritative**; treat everything below as
+> relative proportion, not absolute size. See `SYNC-FINDINGS.md` §5.
+>
+> The kit's own `.jsx` files still encode the uncorrected figures — `MembersScreen.jsx` refers to the
+> "524px drawer", the capped screens to 840px. They are imported verbatim and would need a rebuild
+> to match; nothing here rewrites them.
+
+Measured from the reference screenshots (originally recorded as 1530px viewport, 1:1):
 
 | Overlay | Width | Scrim |
 |---|---|---|
-| Record drawer (transaction A6, card A7, member B1) | 524px | **no** |
+| Record drawer (transaction A6, card A7, member B1) | 524px → **600px** (code) | **no** |
 | Filter drawer (A4, A5) | 283px | yes |
 | Form dialog (A2, B2) | 392px | yes |
 | Copy-rows dialog (B4) | 530px | yes |
@@ -83,7 +94,7 @@ Applied at component / token / doc level so future screens inherit them:
 - **Group rows now navigate**: clicking a group opens its first available child route, disables the group row while expanded, and never paints the group as active — selection lives on the sub-item (`Tab.tsx` / `TabWithChildren`).
 - **Row-height scale** on `Table` (`density`): **72/56 default** — the Members table is the reference row height, and every full-page list in both the admin and internal apps now matches it. 32/36 `dense` is for dialogs, drawers and dashboard summaries only; `media` is now an alias of default, kept for card-thumbnail / avatar-stack rows.
 - **PageHeader**: `title` is required (it warns when missing) and the breadcrumb is now derived from the nav tree when a screen sits under a group, so no sub-page can ship without both lines.
-- **Content width**: `--content-max-width: 840px` applied via `AppShell contentWidth="capped"` to Organization / Accounting / Policies / Plan / Rewards-cashback; per-screen `maxWidth: 840` literals removed. **Observed, pending engineering confirmation** — there is no such constant in the external-app source.
+- **Content width**: `--content-max-width: 840px` applied via `AppShell contentWidth="capped"` to Organization / Accounting / Policies / Plan / Rewards-cashback; per-screen `maxWidth: 840` literals removed. **Observed, pending engineering confirmation** — there is no such constant in the external-app source. **Corrected 2026-08-21 to ≈960px** — the 840 was the ×0.873 capture artifact (`SYNC-FINDINGS.md` §6); the kit files still carry 840 and would need a rebuild to match.
 - **Wallet tiles open the card detail drawer** (A7 `CardDetailDrawer`), matching `WalletCardTile` → `CardDetailsPage` in code. The tile only carries name / last4 / colourway / state, so the drawer's account chip reads **"Main account (GBP)"** — the org's account name from C8. Confirm the account each wallet tile actually resolves to.
 - **Icon audit — closed against `useOrgTabs.tsx`.** The nav map is now taken from code, not inference: Dashboard `SquaresFour`, Wallet `Wallet`, Members & Teams `Users`, Accounts `Bank`, Cards `VerticalCards`, Transactions `ListBullets`, Accounting Export `BookOpen`, **Billing `Files`**, Rewards `Star`, Merchants `Storefront`. Also corrected: top-bar `Sparkle` → custom `Copilot`; Invite-member `UserPlus` → `User`; group chevrons → CaretDown/CaretUp. The **Request card** button keeps `VerticalCards` — confirmed as `WalletPageTitleActions` `startIcon`, not a request-badged variant. Both previously flagged items are now closed; the full map lives in `readme.md` under Iconography.
   - Remaining inference: **Settings = `Gear`**, outside the verified grep range. Nothing in the Phosphor list contradicts it, so it ships — worth a one-line confirmation.

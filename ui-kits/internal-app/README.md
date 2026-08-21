@@ -4,6 +4,13 @@ The second app in the design system. It **reuses every component, pattern and to
 
 Reference: `INT-01` … `INT-27`, real staging with demo data.
 
+> **Capture-scale caveat.** Absolute pixel values measured from reference screenshots carry a
+> **×0.873 capture scale**. Divide a measured figure by 0.873 to recover the real value — proven by
+> two independent ratios against code: the record drawer (524 ÷ 600 = 0.8733) and the sidebar rail
+> (230.5 ÷ 264 = 0.8731). **Code-verified values in `docs/01-foundations.md` are authoritative**;
+> treat measured figures as relative proportion, not absolute size. See `SYNC-FINDINGS.md` §5.
+> This applies to the geometry quoted in the external kit's README too, which this kit shares.
+
 **Internal-app coverage: COMPLETE.** Every captured screen, tab, dialog and popover is wired. `INT-06` … `INT-17` (the Settlements / Repayments / Payouts / Compliance group sub-pages) are in hand and wired as routes with their real titles and breadcrumbs, and are the one remaining build — tranche 2, deferred by agreement, not a gap in the reference material.
 
 ## Architecture

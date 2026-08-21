@@ -16,7 +16,7 @@ Verified against `themeMui5/variables.ts` — the token source of truth.
 
 ## Shape & spacing
 - **Default border radius 8px** (nav items, cards, inputs). Pill radius 30 belongs to partner themes — do not use.
-- Settings/detail pages cap content at **`--content-max-width: 840px`** (observed; engineering to confirm). Data-table pages run full width.
+- Settings/detail pages cap content at **≈960px** (observed-corrected — the earlier 840px figure was a screenshot-scale artifact; see `SYNC-FINDINGS.md` §5/§6. Still no exact code constant; engineering to confirm). Data-table pages run full width.
 - Elevation: borders over shadows; hairline dividers `#e4e4de`-family.
 
 ## Navigation & layout metrics (verified in `src/components/Sidebar/`)
@@ -25,4 +25,4 @@ Verified against `themeMui5/variables.ts` — the token source of truth.
 - Group chevron: Phosphor **CaretDown/CaretUp**. **Group click navigates to its first available child route**; group is disabled while expanded and never takes active state.
 - Page header: small breadcrumb line + **large title, always both**; actions top-right.
 - Tables (MUI X DataGrid): header **56px** (36 small), rows **52px** default, **32px** dense, **72px** media rows (card-thumbnail stacks); uppercase 12/500 headers.
-- Record drawers **524px, no scrim**; Filter drawer has a scrim. (See 04-patterns.)
+- Record drawers **600px, no scrim** (code: `DetailsDrawer` paper `width: 100%`, `maxWidth: 600`); Filter drawer has a scrim. (See 04-patterns.)

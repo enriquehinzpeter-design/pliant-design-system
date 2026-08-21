@@ -57,9 +57,8 @@ to match:
   are named `pliantLogo.svg` / `pliantIconLogo.svg` / `pliantRoundLogo.svg` in this repo's
   `assets/logos/`. Left alone because the card cannot render here anyway (see above) — fix the paths
   if it is ever wired up.
-- **`spacing-layout.card.html`** — was a flat **524px** for the record drawer. Now reads
-  "maxWidth: 600; ~524px at desktop widths; no scrim", reconciling the measured figure with the code.
-  **`SYNC-FINDINGS.md` §5 stays open**: `docs/04-patterns.md` and the `docs/08` canonical table still
-  say 524px flat, and which is authoritative is a design call. Worth knowing that 524px was an
-  independent measurement — the web-app kit README states overlay geometry was measured off the
-  reference screenshots at a 1530px viewport, 1:1.
+- **`spacing-layout.card.html`** — was a flat **524px** for the record drawer; now **600px**, the
+  code value, per **`SYNC-FINDINGS.md` §5** (resolved 2026-08-21). That correction exposed a
+  systematic **×0.873 capture scale** in the reference screenshots, so the card's note now warns that
+  its remaining measured figures are under-reported and names the filter drawer's real value (320px,
+  not the 283px shown). Divide any measured figure by 0.873 to recover the real one.

@@ -11,7 +11,9 @@
 </RecordDrawer>
 ```
 
-**524px, no scrim** (measured A6, A7, B1) — mount it inside the `position: relative` main column and
+**600px, no scrim** (code: `DetailsDrawer` paper `width: 100%`, `maxWidth: 600`. The 524px this note
+originally carried was a ×0.873 screenshot-capture artifact — `SYNC-FINDINGS.md` §5) — mount it
+inside the `position: relative` main column and
 collapse the table's middle columns while it is open. Scrim belongs to `FilterDrawer` only.
 
 `RecordTitle` carries the status badge. Placement varies in the product and both forms ship:

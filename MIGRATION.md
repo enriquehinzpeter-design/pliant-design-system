@@ -33,11 +33,11 @@ Remaining layers:
       added by code, not by shipping an SVG. Figma node `g1YQZdrVs2KJtFwfxgtTmD` `6436:37649` is
       recorded in `docs/02-iconography-and-assets.md` as the artwork reference. See
       `SYNC-FINDINGS.md` §4.
-- [ ] Resolve `SYNC-FINDINGS.md` — 13 entries; **2 resolved and applied** (§4 flags, §11 logo
-      colour), 11 open. Two of the open ones are supply gaps rather than decisions: §12 the metal
-      texture JPEGs, §13 the BAS Fadiro logo. §5 (record drawer) still needs a call — the
-      guidelines card now carries reconciled wording, but `docs/04` and the `docs/08` canonical
-      table still say 524px flat.
+- [ ] Resolve `SYNC-FINDINGS.md` — 13 entries; **4 resolved and applied** (§4 flags, §5 record
+      drawer + the ×0.873 capture-scale artifact it exposed, §6 content max-width corrected to
+      ≈960px, §11 logo colour), 9 open. Two of those are supply gaps rather than decisions: §12 the
+      metal texture JPEGs, §13 the BAS Fadiro logo. §5's next candidates — the other
+      screenshot-measured overlay figures — are listed there and still need code confirmation.
 - [ ] `docs/legacy-DESIGN-SYSTEM.md` — delete after confirming all content migrated to modular docs
 - [ ] Add CODEOWNERS (design team) + branch protection
 - [ ] Re-point Claude Design to import from this repo; register plugin in the org catalog

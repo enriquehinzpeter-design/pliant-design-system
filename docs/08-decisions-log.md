@@ -13,8 +13,8 @@
 | Card artwork source | Figma 💳 Card Library `p2bdSeFycWMli0K1wUdnnG` (nodes 5461:68990 renders, 5461:73221 in-app icons, 4935:3695 physical, 4935:2813 detail art) |
 | Flags | SVG from Figma flag lib `g1YQZdrVs2KJtFwfxgtTmD` node `6436:37649`, ISO-keyed, 16×22; `Country=X Generic` as fallback; never emoji |
 | Card scheme | Per-organization (Visa or Mastercard) — never assume |
-| Record drawer | 524px, no scrim |
-| Content max width | 840px on settings/detail (observed — pending engineering confirmation) |
+| Record drawer | 600px, no scrim (code-verified: `DetailsDrawer` `maxWidth: 600`) |
+| Content max width | ≈960px on settings/detail (observed-corrected for capture scale — pending an exact code constant) |
 
 ## Open questions (design team)
 1. Status-label color tokens for PENDING/DECLINED etc. — same styles reused in filter checkbox labels, so they are a token set; formalize values.
