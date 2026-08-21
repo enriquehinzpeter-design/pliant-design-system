@@ -1,0 +1,6 @@
+{
+  "name": "pliant-design-system",
+  "version": "0.1.0",
+  "description": "Pliant's design system reference: tokens, components, patterns, both app kits, and canonical assets. Install to give any agent the authoritative design context for prototyping, specification, and frontend work.",
+  "author": { "name": "Pliant Design Team" }
+}
