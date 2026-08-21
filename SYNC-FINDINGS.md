@@ -122,10 +122,31 @@ full mapping is in `components/README.md` under "Not in this library". Also wort
 the product's tables are MUI X DataGrid restyled app-side, so the `Table*` primitives this
 library exports are not what `docs/01`'s table geometry describes.
 
+### 11. Logo recolouring was described too broadly — RESOLVED
+
+Raised by the asset extraction: `docs/02-iconography-and-assets.md` described all three marks as
+"single-path, `fill="currentColor"`". Two details did not hold — the wordmark is three paths, and
+the round mark carries no `currentColor` at all.
+
+**Resolution (design team, 2026-08-21):**
+
+- The **wordmark** (`pliantLogo.svg`) and the **icon mark** (`pliantIconLogo.svg`) inherit
+  `currentColor` — white on the dark sidebar, near-black on light. **Path count is irrelevant**
+  and should never have been part of the rule; a mark can be any number of paths as long as it
+  inherits colour.
+- The **round mark** (`pliantRoundLogo.svg`) is **intentionally full-colour** — it is the lime
+  app-icon, used e.g. on login. It must **not** be described as recolouring, and its fixed colours
+  are correct, not a defect.
+
+Applied to `docs/02-iconography-and-assets.md` and `assets/README.md`. Nothing to change in the
+SVGs. This entry stays as the record of the call; fold it into `docs/08-decisions-log.md` with the
+others.
+
 ## Not captured by this sync
 
-- `templates/`, `ui-kits/` and `assets/` are still empty — see `MIGRATION.md`. Screen renders
-  need the app running; nothing in this sync can produce them honestly.
+- `templates/` and `ui-kits/` are still empty — see `MIGRATION.md`. Screen renders need the app
+  running; nothing in this sync can produce them honestly. `assets/` now holds logos, custom icons
+  and integration logos; `cards/` and `flags/` remain Figma-sourced and pending.
 - Component **prop tables** are not extracted. Each doc points at the real source and story
   file instead. Generating them properly means running the package's own `tsc`/`vite-plugin-dts`
   build and reading the emitted `.d.ts`, which the next sync could add.

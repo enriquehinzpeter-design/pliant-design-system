@@ -14,13 +14,24 @@ Remaining layers:
 - [ ] `templates/` — app-shell, data-table-page, settings-form-page
 - [ ] `ui-kits/web-app/` and `ui-kits/internal-app/` — screen renders + READMEs (incl. known gaps).
       Needs the app running; no sync can produce these from source alone.
-- [ ] `assets/` — `logos/` (3 SVGs exist as `pliantLogo.svg`, `pliantIconLogo.svg`,
-      `pliantRoundLogo.svg` in `src/assets/svg/`) · `icons/` (45 custom SVGs exist in
-      `packages/icons/src/assets`) · `cards/` (vector library — Figma-sourced) ·
-      `flags/` (the app uses the `flag-icon-css` library, not SVG exports — see
-      `SYNC-FINDINGS.md` §4 before exporting anything)
-- [ ] Resolve `SYNC-FINDINGS.md` — 10 code-vs-docs deltas found by the first sync, each needing a
-      design-team call, then a line in `docs/08-decisions-log.md`
+- [x] `assets/logos/` — synced 2026-08-21. The 3 Pliant marks. Two colour behaviours: wordmark
+      and icon mark inherit `currentColor`, the round mark is intentionally full-colour
+      (`SYNC-FINDINGS.md` §11).
+- [x] `assets/icons/` — synced 2026-08-21. The 45 custom fintech SVGs, plus
+      `imported-phosphor-icons.txt` (the 201-glyph Phosphor allowlist).
+- [x] `assets/integrations/` — synced 2026-08-21. Agicap, bookman, BuchhaltungsButler — three of
+      the four logos `docs/08` open question 4 records as missing. **BAS Fadiro is not in the
+      codebase and remains open.**
+- [ ] `assets/cards/` — vector card library (139 assets). Figma 💳 Card Library
+      `p2bdSeFycWMli0K1wUdnnG`: nodes `5461:68990` (renders), `5461:73221` (in-app icons),
+      `4935:3695` (physical), `4935:2813` (detail art). Not in the codebase — pull via the Figma
+      pipeline.
+- [ ] `assets/flags/` — Figma flag library `g1YQZdrVs2KJtFwfxgtTmD`, node `6436:37649`
+      (each flag a named child `Country=<ISO> <Name>`, `Country=X Generic` as the fallback).
+      **Read `SYNC-FINDINGS.md` §4 first:** the app renders flags from the `flag-icon-css`
+      library, not SVG exports, so decide whether this layer is still wanted before exporting.
+- [ ] Resolve `SYNC-FINDINGS.md` — 11 code-vs-docs deltas found by the sync; 10 still need a
+      design-team call, then a line in `docs/08-decisions-log.md` (§11 is resolved and applied)
 - [ ] `docs/legacy-DESIGN-SYSTEM.md` — delete after confirming all content migrated to modular docs
 - [ ] Add CODEOWNERS (design team) + branch protection
 - [ ] Re-point Claude Design to import from this repo; register plugin in the org catalog

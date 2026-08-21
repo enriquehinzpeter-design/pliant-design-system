@@ -8,7 +8,11 @@
 - Alerts icon mapping fixed via MuiAlertOverrides: neutral→Question, error→WarningCircle, warning→Warning, info→Info, success→CheckCircle.
 
 ## Logos (`assets/logos/`)
-`logo.svg` 64×24 wordmark, `logo-icon.svg`, `logo-round.svg` — single-path, `fill="currentColor"`; white on dark sidebar, near-black on light. Round mark only in circular avatar slots. No recolouring, no lockups, no drop shadow.
+Three marks, two colour behaviours:
+- **`pliantLogo.svg`** (64×24 wordmark) and **`pliantIconLogo.svg`** — inherit `currentColor`: white on the dark sidebar, near-black on light. Path count is irrelevant; what matters is that they inherit.
+- **`pliantRoundLogo.svg`** — **intentionally full-colour** (the lime app-icon, e.g. login). Do not describe or treat it as recolouring; its fixed colours are correct. Use it in circular app-icon and avatar slots.
+
+No lockups, no drop shadow. See `SYNC-FINDINGS.md` §11 for the decision behind the two behaviours.
 
 ## Card artwork (`assets/cards/`) — see also 08-decisions-log
 - **Everything renders as parametric vector components** (`CardRender` faces front/back, `CardIcon` 25×39 table icons): rounded rect + colourway fill (lime, coral, orange, sage, taupe, cream, black, metal) + Pliant mark + scheme mark + 1×/shield badges + text slots. Physical black is pure vector (node 4935:3695); only metal textures are raster (per-size 2×, never upscaled).
